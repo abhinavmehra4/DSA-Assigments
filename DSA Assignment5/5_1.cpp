@@ -56,12 +56,20 @@ void delete_end(Node* n)
 void delete_middle(Node*n,int k)
 {
 	Node* temp=n;
-	while(temp->next->next->key!=k)
+	while(temp->next->key!=k)
 	{
 		temp=temp->next;
 	}
 	temp=temp->next->next;
 
+    // for(Node* i=temp;temp->key!=k;i=i->next)
+    // {
+    //     if(i->next!=NULL) {
+    //         i = i->next;
+    //     }
+    //     }
+
+    //     temp->next = i->next->next;
 }
 
 void count_sum(Node* n)
@@ -90,7 +98,7 @@ void count_sum(Node* n)
 //     return true;
 // }
 
-bool isSorted(struct Node *head)
+bool isSorted(Node *head)
 {
     if (head == NULL)
         return true;
@@ -201,6 +209,24 @@ int main()
 	cout<<endl<<"Enter the element you want to search\n";
 	int num;
 	cin>>num;
+
+    //deleting a code
+	cout<<endl<<"from where do you want to delete the node\n 1. Beginning\n 2. End\n";
+	int option;
+	cin>>option;
+	switch(option)
+	{
+		case 1:
+			cout<<endl<<"Linked list after deleting the first element is \n";
+			head=head->next;
+			print(head);
+			break;
+		
+		default:
+			delete_end(head);
+			print(head);
+				break;
+	}
 	
     //searching for a key element in a linked list
 	if(search(head,num))
@@ -229,23 +255,23 @@ int main()
     cout<<"Hello world\n";
 
     Node* head2 = NULL;
+    // push(&head2,7);
+	// push(&head2,6);
+	// push(&head2,5);
+	// push(&head2,4);
+	// push(&head2,3);
 	// push(&head2,2);
-	// push(&head2,1);
-	// push(&head2,110);
-	// push(&head2,19);
-	// push(&head2,8);
-	// push(&head2,77);
     push(&head2,7);
 	push(&head2,6);
-	push(&head2,5);
+	push(&head2,55);
 	push(&head2,4);
 	push(&head2,3);
-	push(&head2,2);
+	push(&head2,22);
 
     print(head2);
     cout<<endl;
 
-    if(!isSorted(head2))
+    if(isSorted(head2))
     cout<<"String is sorted\n";
     else
     cout<<"String is not sorted\n";
@@ -303,35 +329,6 @@ int main()
     reverse(&head4);
     cout<<endl;
     print(head4);
-
-
-	cout<<endl<<"from where do you want to delete the node\n 1. Beggining\n 2. Middle\n 3. End\n";
-	int option;
-	cin>>option;
-	switch(option)
-	{
-		case 1:
-			cout<<endl<<"Linked list after deleting the first element is \n";
-			head=head->next;
-			print(head);
-			break;
-		case 2:
-			int x;
-			cout<<endl<<"Enter which number do you want to delete\n";
-			cin>>x;
-			delete_middle(head,x);
-			print(head);
-			break;
-		default:
-			delete_end(head);
-			print(head);
-				break;
-	}
-	
-    // //check if a linked list is sorted
-    // cout<<endl;
-    // check_sorted(head);
-
 
 	return 0;
 }
