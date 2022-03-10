@@ -122,5 +122,5 @@ int main()
     detectCycle(head)?cout<<"Cycle is present":cout<<"Cycle is absent";
 
  
-    return 0;
+    return 0;   
 }

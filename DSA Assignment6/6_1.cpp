@@ -1,128 +1,132 @@
 #include<iostream>
 using namespace std;
+class node{
+public:
 
-class Node{
-  public:
-  Node* next;
-  int key;  
+node* next;
+int data;
+
+//constructor
+node(int val)
+{
+    data=val;
+    next=NULL;
+}
+
 };
 
-void push(Node** head_ref, int new_key)
+void insertAtTail(node* &head, int val)
+//we are taking value of head by address because we want to modify our linked list
 {
-    Node* new_node = new Node();
-    new_node->key=new_key;
-    new_node->next=*(head_ref);
-    *head_ref = new_node;
-}
-
-void print(Node* head_ref)
-{
-    Node* current = head_ref;
-    while(current!=NULL)
+    node* n = new node(val);
+    
+    //incase we are adding the first node to the linked list just use the below if statement
+    if(head==NULL)
     {
-        cout<<current->key<<" ";
-        current=current->next;
+        head=n;
+        return;
     }
-}
 
-Node* copyList(Node* head_ref)
-{
-  // pointer to traverse the given linked list
-    Node* current = head_ref; 
+    node* temp = head;
 
-  // create a new linked list
-Node* newList = NULL;  
-
-    // tail pointer to point the new list's last node.
-    Node* tail = NULL;      
- 
-    while (current != NULL)
+    while(temp->next!=NULL)
     {
-        // if the new list is empty
-        // insert the first node
-        if (newList == NULL)
-        {
-            newList = (Node*)malloc(sizeof(Node));
-            newList->key = current->key;
-            newList->next = NULL;
-            tail = newList;
-        }
-        else {
-            tail->next = (Node*)malloc(sizeof(Node));
-            tail = tail->next;
-            tail->key = current->key;
-            tail->next = NULL;
-        }
-        current = current->next;
+        temp=temp->next;
     }
- 
-    return newList;
+    //when temp reaches null, insert the node at the tail
+    temp->next=n;
 }
 
-string check_loop(Node* head_ref)
+void display(node* head)
+//we are taking the value of head as an address
 {
-    //traverse till the last node till the time you reach the last node
-    Node* current = head_ref; 
+    node* temp = head;
+    while(temp!=NULL)
+    {
+        cout<<temp->data<<"->";
+        temp = temp->next;
+    }
+cout<<"NULL"<<endl;
+}
+
+node* reverse_pointer(node* &head)
+
+{
+    node* prevptr = NULL;
+    node* currptr = head;
+    node* nextptr;
+
+    while(currptr!=NULL)
+    {
+        nextptr=currptr->next;\
+        currptr->next=prevptr;
+        prevptr=currptr;
+        currptr=nextptr;
+    }
+    return prevptr;//as we return the head but this head is the head of the reversed linked list
+}
+
+int count_node(node* head)
+//as no changes are being made to the linked list we pass by variable and not the address
+{
+    node* current = head;
+    int count=1;
     while(current->next!=NULL)
     {
         current=current->next;
+        count++;
     }
-
-    if(current->next==NULL)
-    return "No loop present\n";
-
-    else
-    return "Loop present\n";
+    return count;
 }
 
-Node* reverse_ll(Node* head_ref)
-//The idea is to update the 'next' part of one node at a time which is pointed by the head pointer
+node* middle(node* head)
 {
-    Node* current = head_ref;
-    Node* prev = NULL;
-    Node* nex = NULL;
-
-while(current!=NULL)
-{
-    nex = current->next;// address of the second node is stored
-    current->next=prev; // address of the second node is made NULL
-    prev=current;//Now the prev variable holds the address of the first node so as to not lose track of it
-    current = nex;//now the 
-    //if we want to update the 2nd node, we have to move our head pointer to the second node
-}
-   current = prev; // this way the head points to the last node of the list and the linked list gets reversed
-    return current;
+    node* slow = head;
+    node* fast = head;
+    while(fast!=NULL&&fast->next!=NULL)
+    {
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+    return slow; //hence this returns the middle node of the linked list
 }
 
-void check_palindrome(Node* head_ref)
+bool check_palindrome(node* head)
 {
-    Node* start = head_ref;
+    if(head==NULL)
+    {return true;}
 
-    Node* end = reverse_ll(start);
+    node* mid = middle(head);//hence we got the middle node and all we have to do is reverse it.
+    node* last = reverse_pointer(mid->next);// hence the portion of the linked list starting from the node after the middle gets reversed
+    //and in the head pointer of this reversed linked list is stored in last
+    //but remember that the 'mid+1' node points to NULL
+    node* curr = head;
+
+    while(last!=NULL)
+    {
+        if(last->data!=curr->data)
+        {
+            return false;
+        }
+        last=last->next;
+        curr=curr->next;
+    }
+    return true;
 }
 
 int main()
 {
-    Node* head = NULL;
-    push(&head,6);
-    push(&head,7);
-    push(&head,89);
+    node* head = NULL;
+    insertAtTail(head,4);
+    insertAtTail(head,2);
+    insertAtTail(head,2);
+    insertAtTail(head,4);
+    display(head);
 
-    print(head);
+    cout<<check_palindrome(head)<<endl;
     
-    //checking if the string has loop
-    cout<<endl<<check_loop(head);
-    //reversing a linked list
-    cout<<endl;
-    Node* head1 = copyList(head);
-    cout<<endl;
-    print(head1);
-    cout<<endl;
-    head1 = reverse_ll(head);
+    check_palindrome(head)?cout<<"It is a palindrome"<<endl:cout<<"It is not a pallindrome"<<endl;
     
-    print(head1);
-    cout<<endl;
-    //print(head);
-    //checking for a palindrome
+    
     return 0;
 }
