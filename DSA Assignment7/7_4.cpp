@@ -16,7 +16,7 @@ node(int val)
 
 void insertAtTail(node* &head,int val)
 {
-    node* n = new node(val);
+    node* n = new node(val); //a node is created which already points to null and has data val
     if(head==NULL)
     {
         head=n;
@@ -103,6 +103,11 @@ void pattern(node* &head)
     //and in the head pointer of this reversed linked list is stored in last
     //but remember that the 'mid+1' node points to NULL
     
+    if(curr==NULL||curr->next==NULL)
+    {
+        return;
+    }
+
     //if the linked list has even number of terms
     if(count%2==0)
     {
